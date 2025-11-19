@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskFinder Home</title>
+</head>
+<body>
+
+<h1>Welcome to the TaskFinder Application!</h1>
+
+<div sec:authorize="isAuthenticated()">
+    <p>Hello, <span sec:authentication="name">User</span>!</p>
+    <p>You are successfully logged in and can now manage your tasks.</p>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
+    <hr>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+    <p>Please log in or register to start managing your tasks.</p>
+
+    <p>
+        <a th:href="@{/login}">Login</a> |
+        <a th:href="@{/register}">Register</a>
+    </p>
+    <hr>
+</div>
+
+</body>
+</html>
