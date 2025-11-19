@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+</head>
+<body>
+
+<h2>Register New User</h2>
+
+<div th:if="${param.success}">
+    <p style="color: green;">Registration successful!</p>
+</div>
+
+<div th:if="${param.error}">
+    <p style="color: red;">Registration failed. Username not available.</p>
+</div>
+
+<form th:action="@{/registercustomer}" th:object="${user}" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" th:field="*{username}" required>
+    </div>
+    <br>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="*{password}" required>
+    </div>
+    <br>
+    <div>
+        <button type="submit">Register as customer</button>
+        <button type="submit" th:formaction="@{/registercontractor}">Register as contractor</button>
+    </div>
+</form>
+
+<p>Already registered? <a th:href="@{/login}">Login here</a></p>
+
+</body>
+</html>
