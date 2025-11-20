@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks Management Board</title>
+</head>
+<body>
+
+<div th:if="${userRole=='CUSTOMER'}">
+    <h1>Tasks Overview (Customer)</h1>
+
+    <div th:if="${!#lists.isEmpty(ongoingTasks)}">
+        <h3>Ongoing Tasks</h3>
+        <ul>
+            <li th:each="task : ${ongoingTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a> - <p th:text="${task.status}"></p>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(completedTasks)}">
+        <h3>Completed Tasks</h3>
+        <ul>
+            <li th:each="task : ${completedTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a> - <p th:text="${task.status}"></p>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(cancelledTasks)}">
+        <h3>Cancelled Tasks</h3>
+        <ul>
+            <li th:each="task : ${cancelledTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a> - <p th:text="${task.status}"></p>
+            </li>
+        </ul>
+    </div>
+
+    <br><br>
+    <a th:href="@{/taskform}">Add new task</a>
+</div>
+
+<div th:if="${userRole=='CONTRACTOR'}">
+    <h1>Tasks Overview (Contractor)</h1>
+
+    <div th:if="${!#lists.isEmpty(acceptedTasks)}">
+        <h3>Accepted Tasks</h3>
+        <ul>
+            <li th:each="task : ${acceptedTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a> - <p th:text="${task.status}"></p>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(completedTasks)}">
+        <h3>Completed Tasks</h3>
+        <ul>
+            <li th:each="task : ${completedTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a> - <p th:text="${task.status}"></p>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${!#lists.isEmpty(openTasks)}">
+        <h3>Open Tasks</h3>
+        <ul>
+            <li th:each="task : ${openTasks}">
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.title}"></a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+<br><br><br><br><br>
+<a th:href="@{/}">Home</a>
+</body>
+</html>

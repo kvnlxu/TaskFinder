@@ -10,7 +10,7 @@
 
 <div sec:authorize="isAuthenticated()">
     <p>Hello, <span sec:authentication="name">User</span>!</p>
-    <p>You are successfully logged in and can now manage your tasks.</p>
+    <p>You are successfully logged in and can now manage your tasks <a th:href="@{/tasks}">here</a></p>
 
     <form th:action="@{/logout}" method="post">
         <button type="submit">Logout</button>
