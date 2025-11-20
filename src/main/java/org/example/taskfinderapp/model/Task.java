@@ -1,6 +1,9 @@
 package org.example.taskfinderapp.model;
 import jakarta.persistence.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Entity
 public class Task {
     @Id
@@ -9,10 +12,16 @@ public class Task {
 
     private String title;
     private String description;
-    private double price;
-    private String Status;
+    private Double price;
+    private String status;
     private Long customerId;
     private Long contractorId;
+
+    public boolean isOngoing() {
+        String[] ongoingStatus = {"Open", "Accepted", "Completed"};
+        List<String> ongoingStatusList = Arrays.asList(ongoingStatus);
+        return ongoingStatusList.contains(status);
+    }
 
     public Long getId() {
         return id;
@@ -38,20 +47,20 @@ public class Task {
         this.description = description;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
 
     public Long getCustomerId() {
