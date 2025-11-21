@@ -15,8 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
@@ -115,8 +114,7 @@ public class TaskServiceTest {
         Long contractorId = 1L;
         Mockito.when(taskRepository.findByContractorId(contractorId)).thenReturn(null);
         List<Task> foundTasks = taskService.getTasksByContractorId(contractorId);
-        assertNotNull(foundTasks);
-        assertEquals(0, foundTasks.size());
+        assertNull(foundTasks);
     }
 
     @Test
@@ -133,9 +131,12 @@ public class TaskServiceTest {
         task.setDescription(description);
         task.setPrice(price);
         task.setStatus("Open");
+        task.setCustomerId(customerId);
 
         Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(task)).thenReturn(task);
         Task updatedTask = taskService.acceptTask(contractorId, id);
+        System.out.println(updatedTask);
         assertNotNull(updatedTask);
         assertEquals("Accepted", updatedTask.getStatus());
     }
@@ -146,8 +147,6 @@ public class TaskServiceTest {
         String title = "test title";
         String description = "test description";
         double price = 50.0;
-        long customerId = 10L;
-        long contractorId = 100L;
         Task task = new Task();
         task.setId(id);
         task.setTitle(title);
@@ -156,6 +155,7 @@ public class TaskServiceTest {
         task.setStatus("Open");
 
         Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(task)).thenReturn(task);
         Task updatedTask = taskService.completeTask(id);
         assertNotNull(updatedTask);
         assertEquals("Completed", updatedTask.getStatus());
@@ -167,8 +167,6 @@ public class TaskServiceTest {
         String title = "test title";
         String description = "test description";
         double price = 50.0;
-        long customerId = 10L;
-        long contractorId = 100L;
         Task task = new Task();
         task.setId(id);
         task.setTitle(title);
@@ -177,6 +175,7 @@ public class TaskServiceTest {
         task.setStatus("Open");
 
         Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(task)).thenReturn(task);
         Task updatedTask = taskService.approveTask(id);
         assertNotNull(updatedTask);
         assertEquals("Approved", updatedTask.getStatus());
@@ -188,8 +187,6 @@ public class TaskServiceTest {
         String title = "test title";
         String description = "test description";
         double price = 50.0;
-        long customerId = 10L;
-        long contractorId = 100L;
         Task task = new Task();
         task.setId(id);
         task.setTitle(title);
@@ -198,8 +195,39 @@ public class TaskServiceTest {
         task.setStatus("Open");
 
         Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(task)).thenReturn(task);
         Task updatedTask = taskService.cancelTask(id);
         assertNotNull(updatedTask);
         assertEquals("Cancelled", updatedTask.getStatus());
+    }
+
+    @Test
+    public void testOpenTask() {
+        long id = 1L;
+        String title = "test title";
+        String description = "test description";
+        double price = 50.0;
+        Task task = new Task();
+        task.setId(id);
+        task.setTitle(title);
+        task.setDescription(description);
+        task.setPrice(price);
+        task.setStatus("Cancelled");
+
+        Mockito.when(taskRepository.findById(id)).thenReturn(Optional.of(task));
+        Mockito.when(taskRepository.save(task)).thenReturn(task);
+        Task updatedTask = taskService.openTask(id);
+        assertNotNull(updatedTask);
+        assertEquals("Open", updatedTask.getStatus());
+    }
+
+    @Test
+    public void testGetTaskByStatus() {
+        List<Task> tasks = new ArrayList<>();
+
+        Mockito.when(taskRepository.findByStatus(any(String.class))).thenReturn(tasks);
+        List<Task> foundTasks = taskService.getTasksByStatus("Open");
+        Mockito.verify(taskRepository).findByStatus(any(String.class));
+        assertEquals(foundTasks, tasks);
     }
 }
