@@ -1,0 +1,73 @@
+@startuml
+
++class AppUser {
+    -id
+    -username
+    -password
+    -role
+}
+
++class Task {
+    -id
+    -title
+    -description
+    -price
+    -status
+    -customerId
+    -contractorId
+    +isOngoing()
+}
+
+interface AppUserRepository {
+    findByUsername(String username)
+}
+
+interface TaskRepository {
+    findByCustomerId(Long customerId);
+    findByContractorId(Long contractorId);
+    findByStatus(String status)
+}
+
++class AppUserService {
+    -appUserRepository
+    -passwordEncoder
+    +save(AppUser user)
+    +loadUserByUsername(String username)
+}
+
+class TaskService {
+    -taskRepository
+    +createTask(long customerId, String title, String description, double price)
+    +deleteTask(long taskId)
+    +getTask(long taskId)
+    +getTasksByCustomerId(long customerId)
+    +getTasksByContractorId(long contractorId)
+    +getTasksByStatus(String status)
+    +openTask(long taskId)
+    +acceptTask(long contractorId, long taskId)
+    +completeTask(long taskId)
+    +approveTask(long taskId)
+    +cancelTask(long taskId)
+}
+
+class LoginController {
+    +login()
+    +home()
+}
+
+class RegistrationController {
+    -userService
+}
+
+class TaskController {
+    -taskService
+}
+
+RegistrationController o-- AppUserService
+AppUserService o-- AppUserRepository
+AppUserRepository -- AppUser
+
+TaskController o-- TaskService
+TaskService o-- TaskRepository
+TaskRepository -- Task
+@enduml
