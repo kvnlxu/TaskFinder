@@ -3,11 +3,13 @@ package org.example.taskfinderapp.model;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tech.ailef.snapadmin.external.annotations.Disable;
 
 import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Disable
 public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
