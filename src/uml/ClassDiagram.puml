@@ -63,7 +63,13 @@ class TaskController {
     -taskService
 }
 
+class SecurityConfig {
+    +securityFilterChain(HttpSecurity http)
+    +passwordEncoder()
+}
+
 RegistrationController o-- AppUserService
+UserDetailsService <|-- AppUserService
 AppUserService o-- AppUserRepository
 AppUserRepository -- AppUser
 
